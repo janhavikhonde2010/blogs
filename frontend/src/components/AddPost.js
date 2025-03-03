@@ -18,15 +18,28 @@ const AddPost = ({ onPostAdded }) => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in to add a blog.");
+      return;
+    }
+
     if (newPost.title && newPost.image && newPost.description) {
       try {
-        const response = await axios.post("https://blogs-backend-ivory.vercel.app/posts", newPost);
+        const response = await axios.post(
+          "https://backend-cts4yc3a9-janhavi8220s-projects.vercel.app/posts",
+          newPost,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
         if (response.status === 201) {
           onPostAdded(response.data); // Callback to update parent component
           setNewPost({ title: "", image: "", description: "" });
         }
       } catch (error) {
-        console.error("Error adding post:", error);
+        console.error("Error adding post:", error.response?.data?.message || error.message);
       }
     }
   };

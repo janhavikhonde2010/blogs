@@ -12,27 +12,25 @@ const Home = () => {
     { title: "Top JavaScript Frameworks in 2025", image: "/2.jpg", description: "JavaScript continues to dominate web development..." },
     { title: "How to Start a Startup", image: "/3.jpeg", description: "Every successful startup begins with a great idea..." },
     { title: "Rise of Electric Vehicles", image: "/4.jpg", description: "EVs are revolutionizing transportation..." }
-  ], []); // Empty dependency array ensures memoization
+  ], []);
 
   // Fetch blogs from MongoDB
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const token = localStorage.getItem("token"); // Fetch stored token
-        const response = await axios.get("https://blogs-backend-ivory.vercel.app/posts", {
-          headers: {
-            Authorization: `Bearer ${token}` // Send token with request
-          }
+        const token = localStorage.getItem("token");
+        const response = await axios.get("https://backend-cts4yc3a9-janhavi8220s-projects.vercel.app/posts", {
+          headers: { Authorization: `Bearer ${token}` }
         });
-        setPosts([...defaultBlogs, ...response.data]); // Merge default & fetched blogs
+        setPosts([...defaultBlogs, ...response.data]);
       } catch (error) {
         console.error("Error fetching posts:", error.response?.data?.message || error.message);
-        setPosts(defaultBlogs); // Use default if API fails
+        setPosts(defaultBlogs);
       }
     };
 
     fetchBlogs();
-  }, [defaultBlogs]); // Now it won't cause re-renders
+  }, [defaultBlogs]);
 
   // Handle blog input change
   const handleChange = (e) => {
@@ -51,10 +49,10 @@ const Home = () => {
 
     if (newBlog.title && newBlog.image && newBlog.description) {
       try {
-        const response = await axios.post("https://blogs-backend-ivory.vercel.app/posts", newBlog, {
+        const response = await axios.post("https://backend-cts4yc3a9-janhavi8220s-projects.vercel.app/posts", newBlog, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        setPosts([...posts, response.data]); // Add new blog to state
+        setPosts([...posts, response.data]);
         setNewBlog({ title: "", image: "", description: "" });
       } catch (error) {
         console.error("Error adding blog:", error.response?.data?.message || error.message);
